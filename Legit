@@ -346,6 +346,10 @@ for i = 1, 10 do
 		BtnLabel.Text = "RoniHub"
 	elseif i == 5 then
 		BtnLabel.Text = "ColtHub"
+	elseif i == 6 then
+		BtnLabel.Text = "Auto Redeem"
+	elseif i == 7 then
+		BtnLabel.Text = "AceDuels"
 	else
 		BtnLabel.Text = "Tab " .. i
 	end
@@ -485,8 +489,17 @@ for i = 1, 10 do
 		task.wait(0.08)
 		TweenService:Create(ExecuteBtn, TweenInfo.new(0.08), {Size = UDim2.new(0, 100, 0, 26)}):Play()
 
-		-- put your feature logic for this tab here
-		print("[TabHub] Tab " .. i .. " Executed")
+		-- Tab 6 - Auto Redeem
+		if i == 6 then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Autoredeem/refs/heads/main/Auto%20redeem"))()
+			print("[TabHub] Auto Redeem Loaded!")
+		-- Tab 7 - Ace Duels
+		elseif i == 7 then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Paparazzi/refs/heads/main/Ace%20duels"))()
+			print("[TabHub] Ace Duels Loaded!")
+		else
+			print("[TabHub] Tab " .. i .. " Executed")
+		end
 	end)
 
 	tabButtons[i] = Btn
