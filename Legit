@@ -495,7 +495,7 @@ for i = 1, 10 do
 			print("[TabHub] Auto Redeem Loaded!")
 		-- Tab 7 - Ace Duels
 		elseif i == 7 then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Paparazzi/refs/heads/main/Ace%20duels"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Aceduels/refs/heads/main/BanPastefy"))()
 			print("[TabHub] Ace Duels Loaded!")
 		else
 			print("[TabHub] Tab " .. i .. " Executed")
