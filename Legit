@@ -274,7 +274,7 @@ local tabNames = {
 	"rxzv2 hub",
 	"CleanHub",
 	"CruxHub",
-	"Coming Soon!",
+	"BlackHub",
 	"Coming Soon!",
 	"Coming Soon!",
 	"Coming Soon!",
@@ -443,6 +443,12 @@ for i = 1, 10 do
 				loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/CruxUniversal/refs/heads/main/Gagu"))()
 			end)
 			print("[TabHub] CruxHub executed")
+		elseif i == 4 then
+			-- BlackHub
+			pcall(function()
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Bulbul/refs/heads/main/Karltii"))()
+			end)
+			print("[TabHub] BlackHub executed")
 		else
 			-- Coming Soon! tabs (placeholder)
 			print("[TabHub] " .. tabNames[i] .. " — coming soon!")
