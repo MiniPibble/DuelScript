@@ -275,7 +275,7 @@ local tabNames = {
 	"CleanHub",
 	"CruxHub",
 	"BlackHub",
-	"Coming Soon!",
+	"PeakHub",
 	"Coming Soon!",
 	"Coming Soon!",
 	"Coming Soon!",
@@ -449,6 +449,12 @@ for i = 1, 10 do
 				loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Bulbul/refs/heads/main/Karltii"))()
 			end)
 			print("[TabHub] BlackHub executed")
+		elseif i == 5 then
+			-- PeakHub
+			pcall(function()
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/MiniPibble/Peak/refs/heads/main/Peak%20hub%20(1).txt"))()
+			end)
+			print("[TabHub] PeakHub executed")
 		else
 			-- Coming Soon! tabs (placeholder)
 			print("[TabHub] " .. tabNames[i] .. " — coming soon!")
@@ -509,4 +515,172 @@ UserInputService.InputChanged:Connect(function(input)
 	if input == dragInput and dragging then
 		update(input)
 	end
+end)
+
+-- // Yui Discord Notification (runs in its own scope so it doesn't clash with the hub's variables)
+task.spawn(function()
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+
+local TITLE = "Join Yui's Discord Server"
+local LINK = "https://discord.gg/3jzRWKak6V"
+local SHORT = "discord.gg/3jzRWKak6V"
+
+-- How far up from the bottom edge (raise this to sit higher above the jump button)
+local BOTTOM_OFFSET = 100
+
+local function new(class, props, parent)
+    local o = Instance.new(class)
+    for k, v in pairs(props) do o[k] = v end
+    if parent then o.Parent = parent end
+    return o
+end
+
+local function getParent()
+    local ok, ui = pcall(function() return gethui and gethui() end)
+    if ok and ui then return ui end
+    local ok2, core = pcall(function() return game:GetService("CoreGui") end)
+    if ok2 and core then return core end
+    return Players.LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local parent = getParent()
+if parent:FindFirstChild("YuiDiscordNotif") then parent.YuiDiscordNotif:Destroy() end
+
+local Gui = new("ScreenGui", {
+    Name = "YuiDiscordNotif",
+    ResetOnSpawn = false,
+    IgnoreGuiInset = true,
+    ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+}, parent)
+
+-- Pill (small)
+local Pill = new("TextButton", {
+    Name = "Pill",
+    Text = "",
+    AutoButtonColor = false,
+    Size = UDim2.fromOffset(250, 54),
+    AnchorPoint = Vector2.new(1, 1),
+    Position = UDim2.new(1, 300, 1, -BOTTOM_OFFSET), -- starts off-screen (right)
+    BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+    BorderSizePixel = 0,
+}, Gui)
+new("UICorner", {CornerRadius = UDim.new(1, 0)}, Pill)
+
+-- Background gradient (dark navy -> purple -> navy)
+new("UIGradient", {
+    Rotation = 20,
+    Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 40, 66)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(88, 50, 140)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(24, 32, 56)),
+    }),
+}, Pill)
+
+-- Pill border
+local pillStroke = new("UIStroke", {
+    Thickness = 1.5,
+    Color = Color3.fromRGB(255, 255, 255),
+    ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+}, Pill)
+new("UIGradient", {
+    Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 190, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 110, 230)),
+    }),
+}, pillStroke)
+
+-- Icon circle with gradient ring
+local Icon = new("Frame", {
+    Size = UDim2.fromOffset(38, 38),
+    Position = UDim2.new(0, 8, 0.5, -19),
+    BackgroundColor3 = Color3.fromRGB(14, 14, 18),
+    BorderSizePixel = 0,
+}, Pill)
+new("UICorner", {CornerRadius = UDim.new(1, 0)}, Icon)
+local ring = new("UIStroke", {Thickness = 2.5, Color = Color3.fromRGB(255, 255, 255)}, Icon)
+new("UIGradient", {
+    Rotation = 45,
+    Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 120, 200)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 200, 255)),
+    }),
+}, ring)
+new("TextLabel", {
+    Text = "💵", TextSize = 18, Font = Enum.Font.GothamBold,
+    BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0),
+}, Icon)
+
+-- Green status dot
+local Dot = new("Frame", {
+    Size = UDim2.fromOffset(7, 7),
+    Position = UDim2.new(0, 54, 0.5, -3),
+    BackgroundColor3 = Color3.fromRGB(110, 210, 140),
+    BorderSizePixel = 0,
+}, Pill)
+new("UICorner", {CornerRadius = UDim.new(1, 0)}, Dot)
+
+-- Texts
+local Title = new("TextLabel", {
+    Text = TITLE,
+    Font = Enum.Font.MontserratBold, TextSize = 13,
+    TextColor3 = Color3.fromRGB(245, 245, 255),
+    TextXAlignment = Enum.TextXAlignment.Left,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0, 68, 0, 9), Size = UDim2.new(1, -96, 0, 18),
+}, Pill)
+
+local Sub = new("TextLabel", {
+    Text = SHORT,
+    Font = Enum.Font.Montserrat, TextSize = 11,
+    TextColor3 = Color3.fromRGB(185, 195, 235),
+    TextXAlignment = Enum.TextXAlignment.Left,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0, 68, 0, 28), Size = UDim2.new(1, -96, 0, 16),
+}, Pill)
+
+-- Close button
+local Close = new("TextButton", {
+    Text = "×", Font = Enum.Font.GothamBold, TextSize = 16,
+    TextColor3 = Color3.fromRGB(200, 205, 235),
+    BackgroundTransparency = 1,
+    Size = UDim2.fromOffset(22, 22),
+    Position = UDim2.new(1, -30, 0.5, -11),
+}, Pill)
+
+-- Slide in
+local SHOWN = UDim2.new(1, -14, 1, -BOTTOM_OFFSET)
+local HIDDEN = UDim2.new(1, 300, 1, -BOTTOM_OFFSET)
+TweenService:Create(Pill, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = SHOWN}):Play()
+
+-- Hover scale effect
+local scale = new("UIScale", {Scale = 1}, Pill)
+Pill.MouseEnter:Connect(function()
+    TweenService:Create(scale, TweenInfo.new(0.15), {Scale = 1.04}):Play()
+end)
+Pill.MouseLeave:Connect(function()
+    TweenService:Create(scale, TweenInfo.new(0.15), {Scale = 1}):Play()
+end)
+
+-- Tap to copy invite link
+local busy = false
+Pill.MouseButton1Click:Connect(function()
+    if busy then return end
+    busy = true
+    local ok = pcall(function() setclipboard(LINK) end)
+    Title.Text = ok and "Link Copied!" or "Copy not supported"
+    Sub.Text = ok and "Paste it in your browser" or SHORT
+    task.wait(1.5)
+    Title.Text = TITLE
+    Sub.Text = SHORT
+    busy = false
+end)
+
+-- Close
+Close.MouseButton1Click:Connect(function()
+    local t = TweenService:Create(Pill, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Position = HIDDEN})
+    t:Play()
+    t.Completed:Wait()
+    Gui:Destroy()
+end)
 end)
